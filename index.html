@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src='https://d3js.org/d3.v5.min.js'></script>
+		<style> rect {fill: lightblue; stroke: black; }</style>
+	</head>
+    <body>
+        <svg width=300 height=300>
+        </svg>
+        <script>
+			
+			var array_RRinc = [];
+			
+			d3.csv("drilldown_rrinc.csv").then(function(d) {
+			
+				var country = "Argentina"
+				console.log(d);
+				console.log(d.length);
+				
+				var currentCountryData_array = [];
+				var Rrinc_max_array = [];
+				
+				for (var i = 0; i < d.length; i++) {
+					var currentCountry = d[i].Country;
+					
+					if (currentCountry == country) {
+						currentCountryData_array.push(d[i]);
+					
+						var Rrinc_max = d[i].Rrinc_max;
+						Rrinc_max_array.push(Rrinc_max);
+					}
+				}
+				
+				console.log(currentCountryData_array);
+
+				console.log(Rrinc_max_array);
+				
+				function getMaxOfArray(numArray) {
+				  return Math.max.apply(null, numArray);
+				}
+				
+				var total_Rrinc_max = getMaxOfArray(Rrinc_max_array);
+				
+				console.log(total_Rrinc_max);		
+				
+				
+				
+				const margin = 50;
+				const width = 1000;
+				const height = 500;
+				const barWidth = 50;
+
+				var x = d3.scaleBand().domain(Rrinc_max_array).range([0, width]);
+				var y = d3.scaleLinear().domain([0, total_Rrinc_max]).range([height, 0]);
+				var h = d3.scaleLinear().domain([0, total_Rrinc_max]).range([0, height]);
+
+				d3.select('svg')
+				.attr("width",width+2*margin)
+				.attr("height",height+2*margin)
+				.append("g")
+					.attr("transform","translate("+margin+","+margin+")")
+
+				.selectAll()
+				.data(Rrinc_max_array)
+				.enter().append("rect")
+				.text('text')
+				.attr("x", x)
+				.attr("y", y)
+				.attr("width", barWidth)
+				.attr("height", h);
+
+				d3.select('svg').append('g')
+				.attr('transform', "translate("+margin+","+margin+")")
+				.call(d3.axisLeft(y));
+
+				d3.select('svg').append('g')
+				.attr('transform', "translate("+margin+","+(height+margin)+")")
+				.call(d3.axisBottom(x)/*.tickValues([1988, 1993, 2003, 2008, 2013])*/);
+				
+			});
+
+        </script>
+    </body>
+</html>
+
