@@ -45,13 +45,16 @@
 				console.log(total_Rrinc_max);		
 				
 				
+				const years = [1988, 1993, 2003, 2008, 2013]
+				const data = Rrinc_max_array.map((value, index) => ({x: years[index], y: +value}))
+				console.log('data', data);
 				
 				const margin = 50;
 				const width = 1000;
 				const height = 500;
 				const barWidth = 50;
 
-				var x = d3.scaleBand().domain(Rrinc_max_array).range([0, width]);
+				var x = d3.scaleBand().domain(data.map(p => p.x)).range([0, width]);
 				var y = d3.scaleLinear().domain([0, total_Rrinc_max]).range([height, 0]);
 				var h = d3.scaleLinear().domain([0, total_Rrinc_max]).range([0, height]);
 
@@ -62,13 +65,13 @@
 					.attr("transform","translate("+margin+","+margin+")")
 
 				.selectAll()
-				.data(Rrinc_max_array)
+				.data(data)
 				.enter().append("rect")
 				.text('text')
-				.attr("x", x)
-				.attr("y", y)
+				.attr("x", d => x(d.x) + x.bandwidth() / 2 - barWidth / 2)
+				.attr("y", d => height - h(d.y))
 				.attr("width", barWidth)
-				.attr("height", h);
+				.attr("height", d => h(d.y));
 
 				d3.select('svg').append('g')
 				.attr('transform', "translate("+margin+","+margin+")")
@@ -76,7 +79,7 @@
 
 				d3.select('svg').append('g')
 				.attr('transform', "translate("+margin+","+(height+margin)+")")
-				.call(d3.axisBottom(x)/*.tickValues([1988, 1993, 2003, 2008, 2013])*/);
+				.call(d3.axisBottom(x));
 				
 			});
 
