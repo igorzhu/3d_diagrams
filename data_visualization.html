@@ -546,63 +546,69 @@
 
                     // Orange bar
 
-                var annotation_orange_bar = [
-                        {
-                            note: {
-                                label: "Here is the annotation label",
-                                title: "Annotation for the orange bar",
-                                align: "right",
-                            },
-                            connector: {
-                                end: "none",        // none, or arrow or dot
-                                type: "line",       // Line or curve
-                                points: 3,           // Number of break in the curve
-                                lineType : "horizontal"
-                            },
-                            color: ["#267307"],
-                            x: 710,
-                            y: 190,
-                            dy: -20,
-                            dx: -40
+                var makeAnnotationsOrangeBar = d3.annotation()
+                    .annotations(data_max.map((d,i) => {
+                        //console.log(d);
+                        if (i == 3) {
+                            return {
+                                note: {
+                                    label: "Here is the annotation label",
+                                    title: d.x,
+                                    align: "right",
+                                    orientation: "fixed"
+                                },
+                                connector: {
+                                    end: "none",
+                                    type: "line",
+                                    points: 3,
+                                    lineType : "horizontal"
+                                },
+                                x: x(d.x) + x.bandwidth() / 2 + barWidth / 2,
+                                y: graph_height - h(d.y) + margin - 5,
+                                dy: -20,
+                                dx: 0,
+                                color: ["#267307"]
+                            }
                         }
-                    ]
+                        else return {};
 
-                // Add annotation to the chart
-                var makeAnnotationsAbs1 = d3.annotation()
-                    .annotations(annotation_orange_bar);
+                    }));
                 d3.select("svg")
                     .append("g")
-                    .call(makeAnnotationsAbs1);
+                    .call(makeAnnotationsOrangeBar);
 
                 // Line chart
 
-                var annotation_line_chart = [
-                    {
+                var makeAnnotationsLineChart = d3.annotation()
+                    .annotations(data_pop.map((d,i) => {
+                        console.log(d);
+                if (i == 1) {
+                    return {
                         note: {
                             label: "Here is the annotation label",
                             title: "Annotation for the line chart",
                             align: "left",
+                            orientation: "fixed"
                         },
                         connector: {
-                            end: "none",        // none, or arrow or dot
-                            type: "line",       // Line or curve
-                            points: 3,           // Number of break in the curve
+                            end: "none",
+                            type: "line",
+                            points: 3,
                             lineType : "horizontal"
                         },
-                        color: ["#267307"],
-                        x: 210,
-                        y: 275,
+                        x: x(d.x)+margin*3,
+                        y: graph_height - hp(d.y) +margin,
                         dy: -80,
-                        dx: 80
+                        dx: 80,
+                        color: ["#267307"]
                     }
-                ]
+                }
+                else return {};
 
-                // Add annotation to the chart
-                var makeAnnotationsAbs2 = d3.annotation()
-                    .annotations(annotation_line_chart);
+            }));
                 d3.select("svg")
                     .append("g")
-                    .call(makeAnnotationsAbs2);
+                    .call(makeAnnotationsLineChart);
 
 
             });
@@ -780,63 +786,69 @@
 
                     // Blue line
 
-                var annotation_blue_line = [
-                        {
-                            note: {
-                                label: "Here is the annotation label",
-                                title: "Annotation 1",
-                                align: "right",
-                            },
-                            connector: {
-                                end: "none",        // none, or arrow or dot
-                                type: "line",       // Line or curve
-                                points: 3,           // Number of break in the curve
-                                lineType : "horizontal"
-                            },
-                            color: ["#267307"],
-                            x: 820,
-                            y: 150,
-                            dy: -20,
-                            dx: -30
-                        }
-                    ]
+                var makeAnnotationsBlueLine = d3.annotation()
+                    .annotations(data_rinc.map((d,i) => {
+                        console.log(d);
+                if (i == 1) {
+                    return {
+                        note: {
+                            label: "Here is the annotation label",
+                            title: "Annotation for the blue line",
+                            align: "left",
+                            orientation: "fixed"
+                        },
+                        connector: {
+                            end: "none",
+                            type: "line",
+                            points: 3,
+                            lineType : "horizontal"
+                        },
+                        x: x(d.x)+margin*3,
+                        y: graph_height - h(d.y) +margin,
+                        dy: -80,
+                        dx: 80,
+                        color: ["blue"]
+                    }
+                }
+                else return {};
 
-                // Add annotation to the chart
-                var makeAnnotationsRel1 = d3.annotation()
-                    .annotations(annotation_blue_line);
+            }));
                 d3.select("svg")
                     .append("g")
-                    .call(makeAnnotationsRel1);
+                    .call(makeAnnotationsBlueLine);
 
                 // Red line
 
-                var annotation_red_line = [
-                    {
+                var makeAnnotationsRedLine = d3.annotation()
+                    .annotations(data_pop.map((d,i) => {
+
+                if (i == 2) {
+                    return {
                         note: {
                             label: "Here is the annotation label",
-                            title: "Annotation 2",
+                            title: "Annotation for the red line",
                             align: "right",
+                            orientation: "fixed"
                         },
                         connector: {
-                            end: "none",        // none, or arrow or dot
-                            type: "line",       // Line or curve
-                            points: 3,           // Number of break in the curve
+                            end: "none",
+                            type: "line",
+                            points: 3,
                             lineType : "horizontal"
                         },
-                        color: ["#267307"],
-                        x: 450,
-                        y: 245,
+                        x: x(d.x)+margin*3,
+                        y: graph_height - h(d.y) +margin,
                         dy: 80,
-                        dx: -80
+                        dx: -80,
+                        color: ["red"]
                     }
-                ]
+                }
+                else return {};
 
-                // Add annotation to the chart
-                var makeAnnotationsRel2 = d3.annotation()
-                    .annotations(annotation_red_line);
+            }));
                 d3.select("svg")
                     .append("g")
-                    .call(makeAnnotationsRel2);
+                    .call(makeAnnotationsRedLine);
 
             });
         }
