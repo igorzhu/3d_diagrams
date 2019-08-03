@@ -1,86 +1,168 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<script src='https://d3js.org/d3.v5.min.js'></script>
-		<style> rect {fill: lightblue; stroke: black; }</style>
-	</head>
-    <body>
-        <svg width=300 height=300>
-        </svg>
-        <script>
-			
-			var array_RRinc = [];
-			
-			d3.csv("drilldown_rrinc.csv").then(function(d) {
-			
-				var country = "Argentina"
-				console.log(d);
-				console.log(d.length);
-				
-				var currentCountryData_array = [];
-				var Rrinc_max_array = [];
-				
-				for (var i = 0; i < d.length; i++) {
-					var currentCountry = d[i].Country;
-					
-					if (currentCountry == country) {
-						currentCountryData_array.push(d[i]);
-					
-						var Rrinc_max = d[i].Rrinc_max;
-						Rrinc_max_array.push(Rrinc_max);
-					}
-				}
-				
-				console.log(currentCountryData_array);
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Denis Afanasev">
+    <link rel="icon" href="index.html">
 
-				console.log(Rrinc_max_array);
-				
-				function getMaxOfArray(numArray) {
-				  return Math.max.apply(null, numArray);
-				}
-				
-				var total_Rrinc_max = getMaxOfArray(Rrinc_max_array);
-				
-				console.log(total_Rrinc_max);		
-				
-				
-				
-				const margin = 50;
-				const width = 1000;
-				const height = 500;
-				const barWidth = 50;
+    <title>CS498 Data Visualization (denisa2)</title>
 
-				var x = d3.scaleBand().domain(Rrinc_max_array).range([0, width]);
-				var y = d3.scaleLinear().domain([0, total_Rrinc_max]).range([height, 0]);
-				var h = d3.scaleLinear().domain([0, total_Rrinc_max]).range([0, height]);
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template -->
+  </head>
 
-				d3.select('svg')
-				.attr("width",width+2*margin)
-				.attr("height",height+2*margin)
-				.append("g")
-					.attr("transform","translate("+margin+","+margin+")")
+  <body>
 
-				.selectAll()
-				.data(Rrinc_max_array)
-				.enter().append("rect")
-				.text('text')
-				.attr("x", x)
-				.attr("y", y)
-				.attr("width", barWidth)
-				.attr("height", h);
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                CS498 Data visualization: work description
+            </a>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                    <a class="nav-link" href="index.html">Description</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="data_visualization.html">Visualization</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-				d3.select('svg').append('g')
-				.attr('transform', "translate("+margin+","+margin+")")
-				.call(d3.axisLeft(y));
+    <!-- Page Content -->
+    <div class="container">
+    
+    <h4 class="mt-4">Work credentials</h4>
 
-				d3.select('svg').append('g')
-				.attr('transform', "translate("+margin+","+(height+margin)+")")
-				.call(d3.axisBottom(x)/*.tickValues([1988, 1993, 2003, 2008, 2013])*/);
-				
-			});
+    <p> 
+        <strong>Sudent: Denis Afanasev (denisa2@illinoise.edu) </strong> <br>
+    </p>
+    <p>
+        <strong>Datasource:</strong> <a href="https://www.worldbank.org/en/research/brief/World-Panel-Income-Distribution" > https://www.worldbank.org/en/research/brief/World-Panel-Income-Distribution </a> <br>
+        <strong>Source code:</strong> <a href="https://github.com/denisafanasev/cs498DataVisualization"> https://github.com/denisafanasev/cs498DataVisualization </a> <br>
+        <strong>Web view:</strong> <a href="https://denisafanasev.github.io/cs498DataVisualization/"> https://denisafanasev.github.io/cs498DataVisualization/ </a> <br>
+    
+        <form action="data_visualization.html">
+            <input class="btn btn-dark" type="submit" value="Go to visualization" />
+        </form>
+    </p>
 
-        </script>
-    </body>
+
+    <h4 class="mt-4">Messaging</h4>
+
+    <p align="justify">In this narrative visualization, the main theme is to examine the relationship between changes in a country's population 
+    size and the difference in per capita income between the poorest and richest segments of the population. 
+    The message I want to convey is that, as we can see in the case of the study of changes in the population of each 
+    country and changes in income differentials, these changes are loosely related. <br>
+    Visualization provides an opportunity to examine the changes in both relative and absolute values of these indicators. 
+    Viewers can see and assess trends in these indicators. The main page (Scene 1) summarizes the current state of the 
+    country's population, the difference between GDP per capita between the richest and poorest people, and the change in 
+    income differences since 1988. Further, the user can examine in detail each country and the dynamics of these 
+    indicators in both absolute and relative values in Scene 2 and Scene 3.</p>
+
+    <h4 class="mt-4">Narrative Structure</h4>
+
+    <p align="justify">My narrative visualization follows the drilldown structure. On the main page (scene 1), the user sees the overview 
+    of all the data and can then move on to either scene 2, which shows the absolute dynamics of the indicators, or scene 3, 
+    which shows the dynamics of changes in relative indicators, of his choice. In this way, users can explore the 
+    dynamics of any country of their choice. </p>
+
+    <div class="p-3">
+        <h5 class="mt-4"> Scene 1: </h5>
+        <p>
+            This slide shows a summary of all countries on the scoreplot graph.<br><br>
+
+            <ul>
+                <li> Axis X (Totpop) population in 2008</li>
+                <li>Axis Y-axis (RRincMax) is the highest per capita GDP in 2008 for the richest segments of the population.</li>
+            </ul>
+
+            At the intersection of these indicators is the country where the radius (RIncDiffP) - the relative change in 
+            GDP in the country to the level of 1998 (over a period of 10 years). <br>
+
+            Below the graph there are 2 buttons that allow the user to switch to a detailed study of the dynamics 
+            of the indicators for each country of his choice. To go to the graph, the user has to select a country and 
+            click the corresponding button. <br>
+        </p>
+
+        <h5 class="mt-4"> Scene 2: </h5>
+        <p>
+            This slide shows the visualization of absolute population size and the difference between GDP per capita 
+            for the poorest and wealthiest segments of the population. <br>
+            
+            The left (linear) chart shows the number of population depending on the year. <br>
+                
+            The right (barchart) chart shows the levels of GDP per capita for the poorest and richest segments of 
+            the population for each year of measurement of these indicators. <br>
+        </p>
+
+
+        <h5 class="mt-4"> Scene 3: </h5>
+        <p>
+            This slide shows the relative size of the population and the difference between GDP per capita for the poorest 
+            and wealthiest segments of the population. <br>
+
+            The graph (barchart) shows the level of change in GDP per capita for the poorest and wealthiest segments 
+            of the population for each year of measurement and the level of change in population size. <br>
+
+            The graph illustrates the relationship between these indicators.
+        </p>
+    </div>
+
+    <h4 class="mt-4">Visual Structure</h4>
+
+    <p align="justify">For all scenes, this narrative visualization uses the same background color, the background color of the chart, 
+    the location of the scene (i.e. a single chart with subsequent descriptions), the alignment of charts and text 
+    for to provide a consistent visualization sequence. Scene names, axes and legends are given in all scenes, 
+    to help the audience understand the data. Slide numbers as well as back and forth buttons also are used to 
+    facilitate navigation between scenes. Annotations are also provided to Help the user to focus on important parts 
+    of the charts.</p>
+
+    <h4 class="mt-4">Scenes</h4>
+
+    <p align="justify">My narrative visualization has three main scenes, including the opening scene and two drilldown scenes. 
+    They all use the same scene template. Starting and ending point of visualization is the main stage. The second 
+    and third scene are independent and the user chooses, 
+    to which one of them it is necessary to make the transition from the main stage. 
+    In other words, viewers can put forward a hypothesis (e.g., a change in the GDP per capita difference 
+    between the poorest and wealthiest segments of the population depend on the size of the population of a given country) 
+    on the main stage, which can then be tested on stage 2 or 3 at the user's choice.</p>
+
+    <h4 class="mt-4">Annotations</h4>
+
+    <p align="justify">I used the d3 notation library created by Susie Lou to annotate on a template. 
+    I used this template because it is easy to implement, has a good abstract design and sufficient color 
+    contrast between the background and annotations. Important values necessary for studying the information are 
+    given in the diagrams in the form of annotations.</p>
+
+    <h4 class="mt-4">Parameters</h4>
+
+    <p align="justify">The slide number (e.g., Scene 2, Scene 3, Country for detail, etc.) is a parameter, 
+    who control the fortune. Narrative visualization states include scene 1, scene 2, scene 3. 
+    The status and scene are defined by the numbers after the word "scene". For example, the "scene 3" parameter 
+    indicates that the state is the third scene. The "scene" parameter is displayed on scene 1, 2 and 3, the "country" 
+    parameter is displayed on scene 2 and 3.</p>
+
+    <h4 class="mt-4">Triggers</h4>
+
+    <p align="justify">The slide number, the Back button, the Absolute Values Watch button and the Relative Values Watch button 
+    are triggers that link user actions to changes in the narrative visualization state. 
+    Buttons are displayed at the bottom of the page in the form of blue rectangles and white text, 
+    informing viewers about the possibility of moving back and forth between the main scenes, if any.</p>
+
+    <form action="data_visualization.html">
+        <input class="btn btn-dark" type="submit" value="Go to visualization" />
+    </form>
+
+    </div>
+    <!-- /.container -->
+  </body>
 </html>
-
